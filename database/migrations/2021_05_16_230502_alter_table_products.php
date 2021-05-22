@@ -14,7 +14,9 @@ class AlterTableProducts extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->text('features')->after('description');
+            $table->tinyInteger('new')->default(0);
+            $table->tinyInteger('hit')->default(0);
+            $table->tinyInteger('recommend')->default(0);
         });
     }
 
@@ -26,7 +28,9 @@ class AlterTableProducts extends Migration
     public function down()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->text('features')->nullable()->default(null)->after('description');
+            $table->dropColumn('new')->default(0);
+            $table->dropColumn('hit')->default(0);
+            $table->dropColumn('recommend')->default(0);
         });
     }
 }

@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->string(column:'name');
             $table->string(column:'code');
             $table->text(column:'description')->nullable();
+            $table->text('features')->nullable();
             $table->text(column:'image')->nullable();
             $table->double(column:'price')->default(0);
             $table->timestamps();

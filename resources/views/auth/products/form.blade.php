@@ -31,9 +31,7 @@
                         <input  type="text" class="form-control" name="code" id="code"
                                value="{{ old('code', isset($product) ? $product->code : null) }}">
                     </div>
-                    @error('code')
-                        <div class="alert alert-danger">{{$message}}</div>
-                    @enderror
+                    @include('layouts.error', ['fieldName' => 'code'])
                 </div>
                 <br>
                 <div class="input-group row">
@@ -42,9 +40,7 @@
                         <input  type="text" class="form-control" name="name" id="name"
                                value="{{ old('name', isset($product) ? $product->name : null) }}">
                     </div>
-                    @error('name')
-                        <div class="alert alert-danger">{{$message}}</div>
-                    @enderror
+                    @include('layouts.error', ['fieldName' => 'name'])
                 </div>
                 <br>
                 <div class="input-group row">
@@ -69,9 +65,7 @@
 								<textarea name="description" id="description" cols="72"
                                           rows="7">{{ old('description', isset($product) ? $product->description : null) }}</textarea>
                     </div>
-                    @error('description')
-                        <div class="alert alert-danger">{{$message}}</div>
-                    @enderror
+                    @include('layouts.error', ['fieldName' => 'description'])
                 </div>
                 <div class="input-group row">
                     <label for="features" class="col-sm-2 col-form-label">Характеристики: </label>
@@ -79,9 +73,7 @@
 								<textarea name="features" id="description" cols="72"
                                           rows="7">{{ old('features', isset($product) ? $product->features : null) }}</textarea>
                     </div>
-                    @error('features')
-                        <div class="alert alert-danger">{{$message}}</div>
-                    @enderror
+                    @include('layouts.error', ['fieldName' => 'features'])
                 </div>
                 <br>
                 <div class="input-group row">
@@ -91,9 +83,7 @@
                             Загрузить <input type="file" style="display: none;" name="image" id="image">
                         </label>
                     </div>
-                    @error('image')
-                        <div class="alert alert-danger">{{$message}}</div>
-                    @enderror
+                    @include('layouts.error', ['fieldName' => 'image'])
                 </div>
                 <br>
                 <div class="input-group row">
@@ -102,10 +92,26 @@
                         <input  type="text" class="form-control" name="price" id="price"
                                value="{{ old('price', isset($product) ? $product->price : null) }}">
                     </div>
-                    @error('price')
-                        <div class="alert alert-danger">{{$message}}</div>
-                    @enderror
+                    @include('layouts.error', ['fieldName' => 'price'])
                 </div>
+                <br>
+                @foreach ([
+                    'hit' => 'Хит',
+                    'new' => 'Новинка',
+                    'recommend' => 'Рекомендуемые',
+                ] as $field => $title)
+                    <div class="input-group row">
+                        <label for="{{$field}}" class="col-sm-2 col-form-label">{{$title}}: </label>
+                        <div class="col-sm-6">
+                            <input  type="checkbox" name="{{$field}}" id="{{$field}}"
+                                   @if(isset($product) && $product->$field === 1)
+                                    checked
+                                   @endif
+                            >
+                        </div>
+                    </div>
+                    <br>
+                @endforeach
                 <button class="btn btn-success">Сохранить</button>
             </div>
         </form>

@@ -1,4 +1,15 @@
 <div class="product">
+  <div class="labels">
+    @if ($product->isNew())
+      <span class="badge badge-success">Новинка</span>
+    @endif
+    @if ($product->isRecommend())
+      <span class="badge badge-warning">Рекомендуем</span>
+    @endif
+    @if ($product->isHit())
+      <span class="badge badge-danger">Хит</span>
+    @endif
+  </div>
     <div class="product-img">
       <a href="{{route('product', [$product->category->code, $product->code])}}"><img src="{{Storage::url($product->image)}}" alt="just a holder"></a>
     </div>

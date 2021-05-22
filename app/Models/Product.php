@@ -9,16 +9,48 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['code', 'name', 'category_id', 'features', 'description', 'image', 'price'];
+    protected $fillable = ['code', 'name', 'category_id', 'features', 'description', 'image', 'price', 'hit', 'new', 'recommend'];
 
-    public function category(){
+    public function category()
+    {
         return $this->belongsTo(Category::class);
     }
 
-    public function getPrice(){
+    public function getPrice()
+    {
         if(!is_null($this->pivot)){
             return $this->pivot->count * $this->price;
         }
         return $this->price;
+    }
+
+    public function setNewAttribute($value)
+    {
+        $this->attributes['new'] = $value === 'on' ? 1 : 0;
+    }
+    
+    public function setHitAttribute($value)
+    {
+        $this->attributes['hit'] = $value ==='on' ? 1 : 0;
+    }
+    
+    public function setRecommendAttribute($value)
+    {
+        $this->attributes['recommend'] = $value === 'on' ? 1 : 0;
+    }
+    
+    public function isHit()
+    {
+        return $this->hit === 1;
+    }
+
+    public function isNew()
+    {
+        return $this->new === 1;
+    }
+
+    public function isRecommend()
+    {
+        return $this->recommend === 1;
     }
 }
