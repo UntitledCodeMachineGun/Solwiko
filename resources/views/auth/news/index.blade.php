@@ -45,6 +45,9 @@
             @endforeach
             </tbody>
         </table>
+        <br>
+        {{$news->links()}}
+        <br>
         <a class="btn btn-success" type="button" href="{{ route('news.create') }}">Добавить новость</a>
     </div>
 @endsection

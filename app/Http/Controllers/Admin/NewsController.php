@@ -12,7 +12,7 @@ class NewsController extends Controller
 
     public function index()
     {
-        $news = News::get();
+        $news = News::paginate(14);
 
         return view('auth.news.index', compact('news'));
     }

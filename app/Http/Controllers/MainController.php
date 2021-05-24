@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductsFilterRequest;
 use App\Models\Category;
 use App\Models\Texts;
 use App\Models\Product;
@@ -10,9 +11,24 @@ use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
-    public function index()
+    public function index(ProductsFilterRequest $request)
     {
-        $products = Product::get();
+        $productsQuery = Product::with('category');
+        if($request->filled('price_from')) {
+            $productsQuery->where('price', '>=', $request->price_from);
+        }
+
+        if($request->filled('price_to')) {
+            $productsQuery->where('price', '<=', $request->price_to);
+        }
+
+        foreach(['hit','new','recommend'] as $field) {
+            if($request->has($field)) {
+                $productsQuery->where($field, 1);
+            }
+        }
+
+        $products = $productsQuery->paginate(8)->withPath("?" . $request->getQueryString());
         $categories = Category::get();
         $news = News::get();
         $text = Texts::where('code', 'home')->first();
@@ -21,7 +37,8 @@ class MainController extends Controller
     public function blog($id = null)
     {
         $categories = Category::get();
-        $news = News::get();
+
+        $news = News::paginate(8);
         if ($id == null)
             return view('blog', compact('categories', 'news'));
         else
@@ -46,16 +63,28 @@ class MainController extends Controller
         $categories = Category::get();
         return view('user-info', compact('categories'));
     }
-    public function category($code)
+    public function category($code, ProductsFilterRequest $request)
     {
         $categories = Category::get();
-        foreach ($categories as $cat) {
-            if ($code == $cat->code) {
-                $category = Category::where('code', $code)->first();
-                return view('category', compact('category', 'categories', 'code'));
+
+        $category = Category::where('code', $code)->first();
+        $productsQuery = $category->products();
+        if($request->filled('price_from')) {
+            $productsQuery->where('price', '>=', $request->price_from);
+        }
+
+        if($request->filled('price_to')) {
+            $productsQuery->where('price', '<=', $request->price_to);
+        }
+
+        foreach(['hit','new','recommend'] as $field) {
+            if($request->has($field)) {
+                $productsQuery->where($field, 1);
             }
         }
-        return view('page-404', compact('categories'));
+        $products = $productsQuery->paginate(12);
+        return view('category', compact('category', 'categories', 'code', 'products'));
+
     }
     public function product($code, $product)
     {

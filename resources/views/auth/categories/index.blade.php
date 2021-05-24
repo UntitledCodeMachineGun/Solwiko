@@ -43,7 +43,9 @@
             @endforeach
             </tbody>
         </table>
-        {{-- {{ $categories->links() }} --}}
+        <br>
+        {{ $categories->links() }}
+        <br>
         <a class="btn btn-success" type="button"
            href="{{ route('categories.create') }}">Добавить категорию</a>
     </div>
