@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -47,6 +48,8 @@ class CartController extends Controller
             session()->flash('warning', 'Ошибка!');
         }
 
+        Order::ereaseOrderPrice();
+
         return redirect()->route('index');
     }
 
@@ -74,6 +77,10 @@ class CartController extends Controller
             $order->save();
         }
 
+        $product = Product::find($productId);
+
+        Order::changeFullPrice($product->price);
+
         return redirect()->route('cart');
     }
     public function cartRemove($productId)
@@ -95,6 +102,9 @@ class CartController extends Controller
                 $pivotRow->update();
             }
         }
+        $product = Product::find($productId);
+
+        Order::changeFullPrice(-$product->price);
 
         return redirect()->route('cart');
     }

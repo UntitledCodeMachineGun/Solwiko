@@ -8,16 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
-    public function products(){
+    public function products()
+    {
         return $this->belongsToMany(Product::class)->withPivot('count')->withTimestamps();
     }
 
-    // public function user()
-    // {
-    //     return $this->belongsTo(User::class);
-    // }
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
 
-    public function getFullPrice(){
+    public function calculateFullPrice() 
+    {
         $sum = 50;
         foreach($this->products as $product){
             $sum += $product->getPrice();
@@ -25,7 +27,24 @@ class Order extends Model
         return $sum;
     }
 
-    public function saveOrder($name, $surname, $fathersname, $phone, $city, $post_stantion_number, $call, $add_message){
+    public static function changeFullPrice($changeSum)
+    {
+        $sum = self::getFullPrice() + $changeSum;
+        return session(['full_order_sum' => $sum]);
+    }
+
+    public static function getFullPrice()
+    {
+        return session('full_order_sum', 0);
+    }
+
+    public static function ereaseOrderPrice()
+    {
+        session()->forget('full_order_sum');
+    }
+
+    public function saveOrder($name, $surname, $fathersname, $phone, $city, $post_stantion_number, $call, $add_message)
+    {
         if ($this->status == 0) {
             $this->name = $name;
             $this->surname = $surname;

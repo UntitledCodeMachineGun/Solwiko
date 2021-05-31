@@ -19,7 +19,7 @@
                         @php
                             $i = 1;
                         @endphp
-                        @foreach ($order->products as $product)
+                        @foreach ($order->products()->with('category')->get() as $product)
                         <tr>
                             <td scope="row" aria-label="Номер">{{$i++}}</td>
                             <td aria-label="Название товара"><a href="{{route('product', [$product->category->code, $product->code])}}">{{$product->name}}</a></td>

@@ -19,7 +19,7 @@
     </div>
     <form action="{{route('cart-add', $product)}}" method="POST">
       <button type="submit" class="to-cart-btn">В корзину</button>
-      <a href="{{route('product', [$product->category->code, $product->code])}}" class="to-cart-btn">Подробнее</a>
+      <a href="{{route('product', [isset($category) ? $category->code : $product->category->code, $product->code])}}" class="to-cart-btn">Подробнее</a>
       @csrf
     </form>
   </div>

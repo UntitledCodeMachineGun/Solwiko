@@ -49,7 +49,7 @@
                         </div> --}}
 
                         <div class="pay-bottom">
-                            <p>К оплате <span>{{$order->getFullPrice()}}</span> грн.</p>
+                            <p>К оплате <span>{{$order->calculateFullPrice()}}</span> грн.</p>
                             <button type="submit">Подтвердить заказ</button>
                         </div>
                     </div>
