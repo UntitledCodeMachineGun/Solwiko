@@ -65,6 +65,16 @@
                             <li class="nav-item">
                                 <a class="nav-link @routeactive('news')" href="/blog">Блог</a>
                             </li>
+                            <li class="nav-item">
+                                <form action="{{ route('index') }}" method="get" class="search">
+                                    <div class="input-group rounded">
+                                        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                                        aria-describedby="search-addon" name="search" value="{{ request('search') }}"/>
+                                        <span class="s-addon" id="search-addon">
+                                        <button type="submit"><i class="fas fa-search"></i></button>
+                                    </div>
+                                </form>
+                            </li>
                         </ul>
 
                     </div>

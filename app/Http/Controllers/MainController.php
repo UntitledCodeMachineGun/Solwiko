@@ -7,13 +7,20 @@ use App\Models\Category;
 use App\Models\Texts;
 use App\Models\Product;
 use App\Models\News;
-use Illuminate\Http\Request;
+
+
 
 class MainController extends Controller
 {
+
+
     public function index(ProductsFilterRequest $request)
     {
         $productsQuery = Product::with('category');
+        if($request->filled('search')) {
+            $productsQuery->where('name', 'regexp', $request->search);
+        }
+
         if($request->filled('price_from')) {
             $productsQuery->where('price', '>=', $request->price_from);
         }
@@ -69,6 +76,12 @@ class MainController extends Controller
 
         $category = Category::where('code', $code)->first();
         $productsQuery = $category->products();
+        
+
+        if($request->filled('search')) {
+            $productsQuery->where('name', 'like', $request->search);
+        }
+
         if($request->filled('price_from')) {
             $productsQuery->where('price', '>=', $request->price_from);
         }

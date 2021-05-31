@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\CartController;
+use App\Http\Repositories\EloquentRepository;
 use Illuminate\Support\Facades\Auth;
 
 

@@ -28,6 +28,16 @@ button:focus,
 body {
   font-family: 'Myriad Pro';
 }
+.search {
+  height: 40px;
+}
+.search .rounded {
+  align-items: center;
+  height: 100%;
+}
+.search .rounded button {
+  height: 100% !important;
+}
 button {
   border: none;
   background: none;
