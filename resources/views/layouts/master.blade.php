@@ -66,7 +66,7 @@
                                 <a class="nav-link @routeactive('news')" href="/blog">Блог</a>
                             </li>
                             <li class="nav-item">
-                                <form action="{{ route('index') }}" method="get" class="search">
+                                <form action="{{ url('search') }}" method="get" class="search">
                                     <div class="input-group rounded">
                                         <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
                                         aria-describedby="search-addon" name="search" value="{{ request('search') }}"/>

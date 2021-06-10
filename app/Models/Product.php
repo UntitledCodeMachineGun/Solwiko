@@ -4,13 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-
+use App\Search\Searchable;
 
 
 class Product extends Model
 {
+    use Searchable;
     use HasFactory;
+
+    protected $guarded = ['created_at', 'updated_at'];
+
+
 
     protected $fillable = ['code', 'name', 'category_id', 'features', 'description', 'image', 'price', 'hit', 'new', 'recommend'];
 
@@ -71,4 +75,5 @@ class Product extends Model
     {
         return $this->recommend === 1;
     }
+    
 }

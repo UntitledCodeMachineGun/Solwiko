@@ -37,7 +37,7 @@ Route::group(['prefix' => 'cart'], function() {
     });
 });
 
-
+Route::get('/search', [MainController::class, "search"])->name('search');
 Route::get('/contact', [MainController::class, "contact"])->name('contact');
 Route::get('/info', [MainController::class, "info"])->name('info');
 Route::get('/user', [MainController::class, "user"])->name('user');

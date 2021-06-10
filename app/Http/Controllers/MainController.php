@@ -7,8 +7,11 @@ use App\Models\Category;
 use App\Models\Texts;
 use App\Models\Product;
 use App\Models\News;
-
-
+use App\Http\Repositories\IProductsRepository;
+use App\Http\Repositories\ElasticsearchRepository;
+use Illuminate\Support\Collection;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class MainController extends Controller
 {
@@ -17,9 +20,9 @@ class MainController extends Controller
     public function index(ProductsFilterRequest $request)
     {
         $productsQuery = Product::with('category');
-        if($request->filled('search')) {
-            $productsQuery->where('name', 'regexp', $request->search);
-        }
+        // if($request->filled('search')) {
+        //     $productsQuery->where('name', 'regexp', $request->search);
+        // }
 
         if($request->filled('price_from')) {
             $productsQuery->where('price', '>=', $request->price_from);
@@ -41,6 +44,25 @@ class MainController extends Controller
         $text = Texts::where('code', 'home')->first();
         return view('index', compact('categories', 'text', 'products', 'news'));
     }
+
+    public function search(ElasticsearchRepository $repository)
+    {
+        $categories = Category::get();
+        $news = News::get();
+        $text = Texts::where('code', 'home')->first();
+
+        $result = $repository->search((string) request('search'));
+        $products = $this->paginate($result);
+        return view('index', compact('categories', 'text', 'products', 'news'));
+    }
+
+    public function paginate($items, $perPage = 8, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
+    }
+
     public function blog($id = null)
     {
         $categories = Category::get();
