@@ -21,7 +21,7 @@ class Order extends Model
     public function calculateFullPrice() 
     {
         $sum = 50;
-        foreach($this->products as $product){
+        foreach($this->products()->withTrashed()->get() as $product){
             $sum += $product->getPrice();
         }
         return $sum;

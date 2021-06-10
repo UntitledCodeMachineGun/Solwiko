@@ -121,15 +121,9 @@ class MainController extends Controller
         return view('category', compact('category', 'categories', 'code', 'products'));
 
     }
-    public function product($code, $product)
-    {
+    public function product($category, $productCode) {
         $categories = Category::get();
-        foreach ($categories as $cat) {
-            if ($code == $cat->code) {
-                $category = Category::where('code', $code)->first();
-                return view('product', compact('category', 'categories', 'code'));
-            }
-        }
-        return view('page-404', compact('categories'));
+        $product = Product::withTrashed()->byCode($productCode)->first();
+        return view('product', compact('product', 'categories', 'category'));
     }
 }

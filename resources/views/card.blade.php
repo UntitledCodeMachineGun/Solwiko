@@ -18,8 +18,14 @@
       <b>{{$product->price}} грн.</b>
     </div>
     <form action="{{route('cart-add', $product)}}" method="POST">
-      <button type="submit" class="to-cart-btn">В корзину</button>
-      <a href="{{route('product', [isset($category) ? $category->code : $product->category->code, $product->code])}}" class="to-cart-btn">Подробнее</a>
+
+         @if($product->isAvailable())
+                    <button type="submit" class="to-cart-btn" role="button">В корзину</button>
+                @else
+                    <span class="to-cart-btn">Недоступен</span>
+                @endif
+                <a href="{{ route('product', [isset($category) ? $category->code : $product->category->code, $product->code]) }}"
+                   class="to-cart-btn" role="button">Подробнее</a>
       @csrf
     </form>
   </div>
