@@ -40,7 +40,7 @@
                         @endforeach
                         <tr>
                             <td colspan="3">Общая стоимость:</td>
-                            <td>{{ $order->getFullPrice() }} грн.</td>
+                            <td>{{ $order->calculateFullPrice() }} грн.</td>
                         </tr>
                         </tbody>
                     </table>

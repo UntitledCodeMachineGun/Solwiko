@@ -3,8 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\CartController;
-use App\Http\Repositories\EloquentRepository;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\SocialController;
+
 
 
 
@@ -42,11 +43,16 @@ Route::get('/contact', [MainController::class, "contact"])->name('contact');
 Route::get('/info', [MainController::class, "info"])->name('info');
 Route::get('/user', [MainController::class, "user"])->name('user');
 
+Route::get('/login/google', [SocialController::class, 'googleRedirect'])->name('google');
+Route::get('/login/google/callback', [SocialController::class, 'loginWithGoogle']);
+
+
+
 Route::get('/blog/{news?}', [MainController::class, "blog"])->name('news');
 
 Auth::routes();
 Route::middleware(['auth'])->group(function() {
-    Route::group([
+Route::group([
         'prefix' => 'person',
         'namespace' => 'Person',
         'as' => 'person.',
@@ -71,6 +77,9 @@ Route::middleware(['auth'])->group(function() {
         Route::resource('news', NewsController::class);
     });
 });
+
+Route::get('/auth/google', [SocialController::class, "googleRedirect"])->name('google');
+Route::get('/auth/google/callback', [SocialController::class, "loginWithGoogle"]);
 
 Route::get('/{category}', [MainController::class, "category"])->name('category');
 Route::get('/{category}/{product}', [MainController::class, "product"])->name('product');

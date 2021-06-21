@@ -24,9 +24,9 @@
       <div class="card-top">
         <div class="card-slider">
           <div class="swiper-container">
-            <div class="swiper-wrapper">
+            <div class="swiper-wrapper">                  
               <div class="swiper-slide">
-                <img src="/img/product1_1.jpg" alt="">
+                <img src="{{ Storage::url($product->image) }}">
               </div>
 
             </div>
